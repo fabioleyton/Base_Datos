@@ -3,12 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
-/*
+ /*
  * Este archivo contiene la implementación de la clase Registro, que gestiona
  * la interfaz de usuario para registrar, modificar, buscar y eliminar clientes
  * en una base de datos MySQL.
  */
-
 package JPrincipal;
 
 import java.sql.Connection;
@@ -19,13 +18,13 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
- * La clase Registro extiende JFrame y proporciona la interfaz gráfica de usuario
- * para interactuar con la base de datos.
+ * La clase Registro extiende JFrame y proporciona la interfaz gráfica de
+ * usuario para interactuar con la base de datos.
  *
  * @author Fabio Avendaño
  */
 public class Registro extends javax.swing.JFrame {
-    
+
     // Constantes que contienen la información de conexión a la base de datos
     public static final String URL = "jdbc:mysql://localhost:3306/Base_Datos";
     public static final String USERNAME = "root";
@@ -35,12 +34,11 @@ public class Registro extends javax.swing.JFrame {
     PreparedStatement ps;
     ResultSet rs;
 
-     /**
+    /**
      * Método para obtener una conexión a la base de datos.
      *
      * @return Conexión a la base de datos.
      */
-
     public static Connection getConection() {
         Connection con = null;
 
@@ -286,9 +284,9 @@ public class Registro extends javax.swing.JFrame {
 
             ps = con.prepareStatement("SELECT * FROM cliente WHERE clave = ? ");
             ps.setString(1, txtClave.getText());
-            
+
             rs = ps.executeQuery();
-            
+
             if (rs.next()) {
                 txtid.setText(rs.getString("id_cliente"));
                 txtNombre.setText(rs.getString("nombre_cliente"));
@@ -296,9 +294,9 @@ public class Registro extends javax.swing.JFrame {
                 txtTelefono.setText(rs.getString("telefono_cliente"));
                 txtCorreo.setText(rs.getString("correo_cliente"));
                 txtTelefono.setText(rs.getString("telefono_cliente"));
-                
+
             } else {
-                JOptionPane.showMessageDialog(null, "NO existe una persona con esa clave");                
+                JOptionPane.showMessageDialog(null, "NO existe una persona con esa clave");
             }
 
             con.close();
@@ -323,6 +321,7 @@ public class Registro extends javax.swing.JFrame {
             ps.setString(3, txtDireccion.getText());
             ps.setString(4, txtCorreo.getText());
             ps.setString(5, txtTelefono.getText());
+            ps.setInt(6, Integer.parseInt(txtid.getText()));  // Agregado este línea
 
             int res = ps.executeUpdate();
 
@@ -337,8 +336,9 @@ public class Registro extends javax.swing.JFrame {
             con.close();
 
         } catch (Exception e) {
-            System.err.println();
+            e.printStackTrace();
         }
+
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -352,9 +352,9 @@ public class Registro extends javax.swing.JFrame {
 
             ps = con.prepareStatement("DELETE FROM cliente WHERE id_cliente=? ");
             ps.setInt(1, Integer.parseInt(txtid.getText()));
-            
+
             int res = ps.executeUpdate();
-            
+
             if (res > 0) {
                 JOptionPane.showMessageDialog(null, "Datos Borrados");
                 limpiarCajas();
